@@ -32,7 +32,7 @@ def clean_data(job_data):
 def load_model(vector_path,model_path,class_path):
     loaded_vectorizer = joblib.load(vector_path)
     loaded_model = joblib.load(model_path)
-    loaded_class = pickle.load(open(class_path, 'rb'))
+    loaded_class = joblib.load(class_path)
     return loaded_vectorizer,loaded_model,loaded_class
 # loaded_class = joblib.load(class_list)
 
@@ -61,22 +61,29 @@ text3 = 'property'
 # app=Flask(__name__)
 
 # @app.route('/job_roles',methods= ["POST", "GET"] )
-def job_role(description,title,category):
+def job_role(description, title, category):
 
     # description = request.form.get('description')
     # title = request.form.get('title')
     # category = request.form.get('category')
-    dir_name = category
-    os.path.join(dir_name, base_filename + "." + filename_suffix)
-    model_folder = f"models\{category}"
-    model_file = model_folder
-    vector_path = f"{model_file+category+'_vectorizer.pickle'}"
-    model_path =  f"{model_file+category+'.sav'}"
-    class_path = f"{model_file+category+'.txt'}"
+
+
+    model_folder = "/home/harsh/job_roles_prediction_models/models" + "/" + category + "/"
+    print(model_folder)
+    
+    vector_path = model_folder + category + "_vectorizer.pickle"
+    print(vector_path)
+
+    model_path =  model_folder + category + ".sav"
+    print(model_path)
+
+    class_path = model_folder + category
+    print(class_path)
+
     loaded_vectorizer,loaded_model,loaded_class = load_model(vector_path,model_path,class_path)
 
     def predict_job_roles(q):
-        q = clean_data()
+        q = clean_data(q)
         q_vec = loaded_vectorizer.transform([q])
         q_pred = loaded_model.predict(q_vec)
         return loaded_class.inverse_transform(q_pred)
