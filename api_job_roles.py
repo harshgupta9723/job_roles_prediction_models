@@ -13,9 +13,8 @@ from sklearn.preprocessing import MultiLabelBinarizer
 #Load all important files to predict job_title
 #these files including encodings and pretrained models
 
-desc_title_vectorizer = 'saved_model\desc_title_vectorizer'
-prediction_model = 'saved_model\svm_desc_title_prediction_model'
-model = joblib.load(prediction_model)
+desc_title_vectorizer = '/home/harsh/job_roles_prediction_models/job_description_vectorizer'
+prediction_model = '/home/harsh/job_roles_prediction_models/svm_desc_title_prediction_model'
 
 #Datacleaning function to clean data
 def clean_data(job_data):
@@ -28,10 +27,8 @@ def clean_data(job_data):
 
 def encoding_data_point(df):
     encode_description = joblib.load(desc_title_vectorizer)
-    description_title_tfidf = encode_description.transform(df['clean_desc_title'].values) # transform data point
+    description_title_tfidf = encode_description.transform(df) # transform data point
     return description_title_tfidf
-
-
 
 def find_class(df):
     y = df['job_roles']
@@ -39,20 +36,19 @@ def find_class(df):
     mlb = MultiLabelBinarizer()
     y_bin = mlb.fit_transform(y)
     return mlb
-    # classes = mulitlabel_binarizer.classes_
 
-# def infer_tags_svm(data):
-#     q_vec = encoding_data_point(data_poi)
-#     q_pred = model.predict(q_vec)
-#     return mlb.inverse_transform(q_pred)
+def infer_tags_svm(data):
+    q_vec = encoding_data_point(data)
+    print(q_vec)
+    q_pred = prediction_model.predict(q_vec)
+    return mlb.inverse_transform(q_pred)
 
 def main(df):
     df['desc_title'] = df['description'] + ' '+ df['title']
     df['clean_desc_title']= df['desc_title'].apply(clean_data)
-    encoded_string = encoding_data_point(df)
-    print('yes')
-    print(encoded_string)
-    # print(cleaned_string)
+    
+    results = infer_tags_svm(df['clean_desc_title'])
+    print(results)
 
     return 
 
@@ -63,14 +59,7 @@ data = [[text1,text2]]
 col_names = ['description', 'title']
 df = pd.DataFrame(data,columns=col_names)
 
-# df['desc_title'] = df['description'] + ' '+ df['title']
-# df['clean_desc_title']= df['desc_title'].apply(clean_data)
-# print(encoding_data_point(df))
-# # print(df)
-# main(df)
-encode_description = joblib.load(desc_title_vectorizer)
-print(encode_description([text2]))
-
+main(df)
 
 
 # app=Flask(__name__)
@@ -79,13 +68,13 @@ print(encode_description([text2]))
 # def job_role():
 
 #     category = request.form.get('category')
-def infer_tags(q):
-    q = clean_data(q)
-    q_vec = encode_description.transform([q])
-    q_pred = model.predict(q_vec)
-    # return mlb.inverse_transform(q_pred)#     title = request.form.get('title')
+# def infer_tags(q):
+#     q = clean_data(q)
+#     q_vec = encode_description.transform([q])
+#     q_pred = model.predict(q_vec)
+#     # return mlb.inverse_transform(q_pred)#     title = request.form.get('title')
 
-infer_tags(text2)
+# infer_tags(text2)
 #     predicted_job_roles = test(category, description, title)
 
 #     return jsonify(predicted_job_roles)
