@@ -1,26 +1,21 @@
+# It loads all trained model and use them to predict the job_roles.
+# Description ,Category and Title are given as input and job-title is output.
+
+
 from flask import Flask,request,jsonify
 from flask import app
-from nltk.util import pr
-import pandas as pd
-import numpy as np
 import re
-import io
 import joblib
 import pickle
 from nltk.corpus import stopwords
-import os
-from scipy.sparse import hstack
-from sklearn.preprocessing import MultiLabelBinarizer
 
-#Load all important files to predict job_title
-#these files including encodings and pretrained models
 
-# desc_title_vectorizer = 'saved_model/vectorizer'
-# prediction_model = 'saved_model/model'
-# class_list = 'saved_model/classes.txt'
-
-#Datacleaning function to clean data
 def clean_data(job_data):
+    """
+    It cleans the given text.
+    Input: Text
+    Output: Clean text
+    """
     stop_words = set(stopwords.words('english'))
     text = job_data
     text = text.lower()
@@ -28,88 +23,74 @@ def clean_data(job_data):
     text = ' '.join([text for text in text.split() if text not in stop_words]) #removing stopwords
     return text
 
-
+# working properly
 def load_model(vector_path,model_path,class_path):
-    loaded_vectorizer = joblib.load(vector_path)
+    """
+    It loads the all three trained models.
+    Input : path of saved model.
+    Output: loaded models
+    """
     loaded_model = joblib.load(model_path)
-    loaded_class = joblib.load(class_path)
+    loaded_vectorizer = pickle.load(open(vector_path, 'rb'))
+    with open(class_path,'r') as f:
+       loaded_class =  f.read()
+    print(loaded_class)
     return loaded_vectorizer,loaded_model,loaded_class
-# loaded_class = joblib.load(class_list)
 
 
-# def predict_job_roles(q):
-#     q = clean_data(q)
-#     q_vec = loaded_vectorizer.transform([q])
-#     q_pred = loaded_model.predict(q_vec)
-#     return loaded_class.inverse_transform(q_pred)
-
-# def main(description , title):
-#     final_string = description + ' '+ title    
-#     result = predict_job_roles(final_string)
-#     return result
+def inverse_transform(class_list,encoded_list):
+    """
+    It map the classes with encoded result.
+    Input : list of class ,predicted encoded value.
+    Output : predicted job roles.
+    """
+    result = [class_list[i] for i in range(len(encoded_list[0])) if encoded_list[0][i] == 1]
+    return result
 
 
 
+app=Flask(__name__)
 
-text1 = 'Must have excellent management and communication skills\r\n•\r\nFamiliarity with business skills as relating to ground operations, i.e. budgeting, cost control, labor allocation, and inventory management\r\n•\r\nProficient in MS Office suite'
-text2 = 'Airline - Ground Handling Manager'
-text3 = 'property'
+@app.route('/job_roles',methods= ["POST", "GET"] )
 
-# main(text1 ,text2)
+def job_role():
+    """
+    It is main function to use all the loaded models.
+    Input :None
+    Output: Predicted job-roles
+    """
+    description = request.form.get('description')
+    title = request.form.get('title')
+    category = request.form.get('category')
 
-
-# app=Flask(__name__)
-
-# @app.route('/job_roles',methods= ["POST", "GET"] )
-def job_role(description, title, category):
-
-    # description = request.form.get('description')
-    # title = request.form.get('title')
-    # category = request.form.get('category')
-
-
-    model_folder = "/home/harsh/job_roles_prediction_models/models" + "/" + category + "/"
-    print(model_folder)
+    model_folder = "models" + "/" + category + "/"
     
     vector_path = model_folder + category + "_vectorizer.pickle"
-    print(vector_path)
 
     model_path =  model_folder + category + ".sav"
-    print(model_path)
 
-    class_path = model_folder + category
-    print(class_path)
+    class_path = model_folder + category+ ".txt"
 
     loaded_vectorizer,loaded_model,loaded_class = load_model(vector_path,model_path,class_path)
 
     def predict_job_roles(q):
+        """
+        It predict the job roles
+        Input: text
+        Output : job_roles
+        """
         q = clean_data(q)
         q_vec = loaded_vectorizer.transform([q])
         q_pred = loaded_model.predict(q_vec)
-        return loaded_class.inverse_transform(q_pred)
+        final_result = inverse_transform(loaded_class,q_pred)
+        return final_result
+
 
     final_string = description + ' '+ title
     result = predict_job_roles(final_string)
-    print(result)
-
-    
-
-    # def main(description , title):
-
-    #     final_string = description + ' '+ title    
-    #     result = predict_job_roles(final_string)
-    #     return result
+    return jsonify(result)
 
 
-    
+if __name__=="__main__":
 
-job_role(text1,text2,text3)
-
-    # job_roles = main(description, title)
-    # return jsonify(job_roles)
-
-
-
-# if __name__=="__main__":
-
-#     app.run()
+    app.run()
