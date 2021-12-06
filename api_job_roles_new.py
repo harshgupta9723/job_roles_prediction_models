@@ -8,6 +8,7 @@ import re
 import joblib
 import pickle
 from nltk.corpus import stopwords
+import pandas as pd
 
 
 def clean_data(job_data):
@@ -32,9 +33,10 @@ def load_model(vector_path,model_path,class_path):
     """
     loaded_model = joblib.load(model_path)
     loaded_vectorizer = pickle.load(open(vector_path, 'rb'))
-    with open(class_path,'r') as f:
-       loaded_class =  f.read()
-    print(loaded_class)
+
+    class_data = pd.read_csv(class_path)
+    loaded_class = list(class_data["classes"])
+
     return loaded_vectorizer,loaded_model,loaded_class
 
 
@@ -44,9 +46,9 @@ def inverse_transform(class_list,encoded_list):
     Input : list of class ,predicted encoded value.
     Output : predicted job roles.
     """
+
     result = [class_list[i] for i in range(len(encoded_list[0])) if encoded_list[0][i] == 1]
     return result
-
 
 
 app=Flask(__name__)
@@ -69,8 +71,8 @@ def job_role():
 
     model_path =  model_folder + category + ".sav"
 
-    class_path = model_folder + category+ ".txt"
-
+    class_path = model_folder + category + ".csv"
+    
     loaded_vectorizer,loaded_model,loaded_class = load_model(vector_path,model_path,class_path)
 
     def predict_job_roles(q):
