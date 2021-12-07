@@ -32,6 +32,7 @@ def load_model(vector_path,model_path,class_path):
     Output: loaded models
     """
     loaded_model = joblib.load(model_path)
+
     loaded_vectorizer = pickle.load(open(vector_path, 'rb'))
 
     class_data = pd.read_csv(class_path)
@@ -63,7 +64,7 @@ def job_role():
     """
     description = request.form.get('description')
     title = request.form.get('title')
-    category = request.form.get('category')
+    category = request.form.get('category')    
 
     model_folder = "models" + "/" + category + "/"
     
@@ -88,11 +89,13 @@ def job_role():
         return final_result
 
 
-    final_string = description + ' '+ title
-    result = predict_job_roles(final_string)
+    final_string = description + ' ' + title
+    job_roles = predict_job_roles(final_string)
+    
+    result = {'job_roles' : job_roles}
+    
     return jsonify(result)
 
 
 if __name__=="__main__":
-
     app.run()
