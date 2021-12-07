@@ -1,7 +1,11 @@
+"""
+    this file is responsible for training the model
+"""
+
+# importing libraries
 import numpy as np 
 import pandas as pd 
 import os
-
 import pickle
 # load stop words
 import nltk
@@ -12,10 +16,8 @@ import re
 from bs4 import BeautifulSoup
 # mulitlable encoder
 from sklearn.preprocessing import MultiLabelBinarizer
-
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
-
 from sklearn.svm import SVC
 # Binary Relevance
 from sklearn.multiclass import OneVsRestClassifier
@@ -30,9 +32,13 @@ class Model:
 
     # txt cleaning
     def textCleaning(self, text):      
-                            
+        """
+            input "text" -> this is some @work #this 
+            output "text" -> this some work 
+        """                
         #     bs4
         soup = BeautifulSoup(text, 'lxml')
+
         text = soup.text
         #     remove urls
         text = re.sub(r'http\S+', " ", text)
@@ -79,7 +85,15 @@ class Model:
             lang="en"                       # set to 'de' for German special handling
         )
 
+    # read and process the csv file
     def readAndProcessData(self, csvpath, categroy):
+
+        """
+            input -> csvpath - (path for the csv)
+                     category - category name
+
+            output -> model.sav, model_vectorizer.pickle, model.csv
+        """
         
         print("################## Reading data #################\n")
         # read data 
@@ -109,7 +123,8 @@ class Model:
         value = []
         for i in all_classes:
             value.append(i)
-        
+            
+        # saving the classnames
         pd.DataFrame({"classes": value}).to_csv(f"models/{folder_name}/{categroy}.csv", index=False)
 
         # encoding x 
