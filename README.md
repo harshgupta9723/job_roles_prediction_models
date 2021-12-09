@@ -2,7 +2,7 @@
 
 ## Modeling
 
-Model 1: Count Vectorizer + TF-IDF Transformation + Classification Models (Random Forest/SGD/SVM)
+Model 1: Count Vectorizer + TF-IDF Transformation + Classification Models (onevsrest)
 
 Model 2: Word2Vec Embedding + Classification Models (Random Forest/SGD)
 
