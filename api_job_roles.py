@@ -9,6 +9,7 @@ import joblib
 import pickle
 from nltk.corpus import stopwords
 import pandas as pd
+import sys
 
 
 def clean_data(job_data):
@@ -24,18 +25,28 @@ def clean_data(job_data):
     text = ' '.join([text for text in text.split() if text not in stop_words]) #removing stopwords
     return text
 
-# working properly
+
 def load_model(vector_path,model_path,class_path):
     """
     It loads the all three trained models.
     Input : path of saved model.
     Output: loaded models
     """
-    loaded_model = joblib.load(model_path)
-    loaded_vectorizer = pickle.load(open(vector_path, 'rb'))
-
-    class_data = pd.read_csv(class_path)
-    loaded_class = list(class_data["classes"])
+# implementing exception handling
+    try:
+        loaded_model = joblib.load(model_path)
+        loaded_vectorizer = pickle.load(open(vector_path, 'rb'))
+        class_data = pd.read_csv(class_path)
+        loaded_class = list(class_data["classes"])
+    except FileNotFoundError:
+        print("File not found.  Aborting")
+        sys.exit(1)
+    except OSError:
+        print("OS error occurred trying to open ")
+        sys.exit(1)
+    except Exception as err:
+        print(f"Unexpected error opening  is",repr(err))
+        sys.exit(1) 
 
     return loaded_vectorizer,loaded_model,loaded_class
 
@@ -65,32 +76,36 @@ def job_role():
     title = request.form.get('title')
     category = request.form.get('category')
 
-    model_folder = "models" + "/" + category + "/"
+    if category == "":
+        print("no category")
+        sys.exit()
+    else:
+        model_folder = "models" + "/" + category + "/"
     
-    vector_path = model_folder + category + "_vectorizer.pickle"
+        vector_path = model_folder + category + "_vectorizer.pickle"
 
-    model_path =  model_folder + category + ".sav"
+        model_path =  model_folder + category + ".sav"
 
-    class_path = model_folder + category + ".csv"
+        class_path = model_folder + category + ".csv"
     
-    loaded_vectorizer,loaded_model,loaded_class = load_model(vector_path,model_path,class_path)
+        loaded_vectorizer,loaded_model,loaded_class = load_model(vector_path,model_path,class_path)
 
-    def predict_job_roles(q):
-        """
-        It predict the job roles
-        Input: text
-        Output : job_roles
-        """
-        q = clean_data(q)
-        q_vec = loaded_vectorizer.transform([q])
-        q_pred = loaded_model.predict(q_vec)
-        final_result = inverse_transform(loaded_class,q_pred)
-        return final_result
+        def predict_job_roles(q):
+            """
+            It predict the job roles
+            Input: text
+            Output : job_roles
+            """
+            q = clean_data(q)
+            q_vec = loaded_vectorizer.transform([q])
+            q_pred = loaded_model.predict(q_vec)
+            final_result = inverse_transform(loaded_class,q_pred)
+            return final_result
 
 
-    final_string = description + ' '+ title
-    result = predict_job_roles(final_string)
-    return jsonify(result)
+        final_string = description + ' '+ title
+        result = predict_job_roles(final_string)
+        return jsonify(result)
 
 
 if __name__=="__main__":
