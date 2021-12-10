@@ -64,7 +64,9 @@ def job_role():
     """
     description = request.form.get('description')
     title = request.form.get('title')
-    category = request.form.get('category')    
+    raw_category = request.form.get('category')
+    
+    category = raw_category.replace(' ', '_').lower() 
 
     model_folder = "models" + "/" + category + "/"
     
