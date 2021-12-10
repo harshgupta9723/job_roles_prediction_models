@@ -20,7 +20,10 @@ def get_jobs_data():
     cur = db.cursor()
 
     data = []
-
+    
+    #jobrole2jobtable
+    #role_id, job_id
+    #create table for job roles
     query = "select job_title, html_job_description, industry from jobs.job where industry != '' and html_job_description != '' and industry = 'Healthcare' limit 20"
     cur.execute(query)
     job_list = cur.fetchall()
