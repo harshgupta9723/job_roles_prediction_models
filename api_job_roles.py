@@ -10,6 +10,7 @@ import pickle
 from nltk.corpus import stopwords
 import pandas as pd
 import sys
+import os
 
 
 def clean_data(job_data):
@@ -113,4 +114,4 @@ def job_role():
 
 
 if __name__=="__main__":
-    app.run()
+    app.run(os.getenv("ip_host"), os.getenv("port"))
