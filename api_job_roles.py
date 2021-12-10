@@ -74,7 +74,7 @@ def job_role():
     """
     description = request.form.get('description')
     title = request.form.get('title')
-    category = request.form.get('category')
+    category = request.form.get('category')    
 
     if category == "":
         print("no category")
@@ -109,5 +109,4 @@ def job_role():
 
 
 if __name__=="__main__":
-
     app.run()
