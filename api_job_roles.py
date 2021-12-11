@@ -14,7 +14,7 @@ import sys
 
 def clean_data(job_data):
     """
-    It cleans the given text.
+    This function cleans the given text.
     Input: Text
     Output: Clean text
     """
@@ -28,7 +28,7 @@ def clean_data(job_data):
 
 def load_model(vector_path,model_path,class_path):
     """
-    It loads the all three trained models.
+    This function loads the all three trained models.
     Input : path of saved model.
     Output: loaded models
     """
@@ -53,7 +53,7 @@ def load_model(vector_path,model_path,class_path):
 
 def inverse_transform(class_list,encoded_list):
     """
-    It map the classes with encoded result.
+    This function map the classes with encoded result.
     Input : list of class ,predicted encoded value.
     Output : predicted job roles.
     """
@@ -74,7 +74,7 @@ def job_role():
     """
     description = request.form.get('description')
     title = request.form.get('title')
-    category = request.form.get('category')    
+    category = request.form.get('category')
 
     if category == "":
         print("no category")
@@ -103,7 +103,7 @@ def job_role():
             return final_result
 
 
-        final_string = description + ' '+ title
+        final_string = str(description) + ' '+ str(title)
         result = predict_job_roles(final_string)
         return jsonify(result)
 
