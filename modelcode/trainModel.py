@@ -1,11 +1,7 @@
-"""
-    this file is responsible for training the model
-"""
-
-# importing libraries
 import numpy as np 
 import pandas as pd 
 import os
+
 import pickle
 # load stop words
 import nltk
@@ -16,13 +12,16 @@ import re
 from bs4 import BeautifulSoup
 # mulitlable encoder
 from sklearn.preprocessing import MultiLabelBinarizer
+
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.svm import SVC
-# Binary Relevance
-from sklearn.multiclass import OneVsRestClassifier
-# Performance metric
-from sklearn.metrics import f1_score
+
+# from sklearn.svm import SVC
+# from sklearn.neighbors import KNeighborsClassifier
+# # Binary Relevance
+# from sklearn.multiclass import OneVsRestClassifier
+# # Performance metric
+# from sklearn.metrics import f1_score
 
 
 class Model:
@@ -32,13 +31,9 @@ class Model:
 
     # txt cleaning
     def textCleaning(self, text):      
-        """
-            input "text" -> this is some @work #this 
-            output "text" -> this some work 
-        """                
+                            
         #     bs4
         soup = BeautifulSoup(text, 'lxml')
-
         text = soup.text
         #     remove urls
         text = re.sub(r'http\S+', " ", text)
@@ -85,24 +80,16 @@ class Model:
             lang="en"                       # set to 'de' for German special handling
         )
 
-    # read and process the csv file
     def readAndProcessData(self, csvpath, categroy):
-
-        """
-            input -> csvpath - (path for the csv)
-                     category - category name
-
-            output -> model.sav, model_vectorizer.pickle, model.csv
-        """
         
         print("################## Reading data #################\n")
         # read data 
         csv_data = pd.read_csv(csvpath)
-        df = csv_data[["job_roles","desc","title"]]
-        df = df[df['desc'] != "No Information Found"]
+        df = csv_data[["job_roles","clean_desc","title"]]
+        df = df[df['clean_desc'] != "No Information Found"]
        
         # df['job_roles'] = df['search_query'].apply(lambda x : x.split('jobs')[0])
-        df['clean_desc'] = df['desc'].apply(lambda x: self.textCleaning(x))    
+        # df['clean_desc'] = df['desc'].apply(lambda x: self.textCleaning(x))    
         # print(df['clean_desc'].head())
 
         # making folder
@@ -123,8 +110,7 @@ class Model:
         value = []
         for i in all_classes:
             value.append(i)
-            
-        # saving the classnames
+        
         pd.DataFrame({"classes": value}).to_csv(f"models/{folder_name}/{categroy}.csv", index=False)
 
         # encoding x 
@@ -144,20 +130,24 @@ class Model:
         print("################## Encoding encoded #################\n")
         # 
 
-        print("################## Model building started #################\n")
-        svc = SVC( kernel='rbf', C=1e9, gamma=1e-07)
-        svm_clf = OneVsRestClassifier(svc)
-        svm_clf.fit(xtrain_tfidf, ytrain)
-        print("################## Model building end #################\n")
-        # saving the model 
-        # make folder if not exist
-       
-        filename = f'models/{folder_name}/{categroy}.sav'
-        pickle.dump(svm_clf, open(f'models/{folder_name}/{categroy}.sav', 'wb'))
-        loaded_model = pickle.load(open(filename, 'rb'))
+        return xtrain_tfidf, xval_tfidf, ytrain, yval, categroy
 
-        print("################## Making prediction #################\n")
-        svm_pred = svm_clf.predict(xval_tfidf)
-        # evaluate performance
-        print(f1_score(yval, svm_pred, average="micro"))
+
+        # print("################## Model building started #################\n")
+        # svc = SVC( kernel='rbf', C=1e9, gamma=1e-07)
+        # # svc = KNeighborsClassifier(n_neighbors = 5, weights = 'distance',algorithm = 'brute',metric = 'minkowski')
+        # svm_clf = OneVsRestClassifier(svc)
+        # svm_clf.fit(xtrain_tfidf, ytrain)
+        # print("################## Model building end #################\n")
+        # # saving the model 
+        # # make folder if not exist
+       
+        # filename = f'models/{folder_name}/{categroy}.sav'
+        # pickle.dump(svm_clf, open(f'models/{folder_name}/{categroy}.sav', 'wb'))
+        # loaded_model = pickle.load(open(filename, 'rb'))
+
+        # print("################## Making prediction #################\n")
+        # svm_pred = svm_clf.predict(xval_tfidf)
+        # # evaluate performance
+        # print(f1_score(yval, svm_pred, average="micro"))
         
