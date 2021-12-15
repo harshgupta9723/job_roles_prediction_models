@@ -6,6 +6,7 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.metrics import f1_score
 import pickle
 from xgboost import XGBClassifier
+from sklearn.linear_model import SGDClassifier
 
 from trainModel import Model
 
@@ -31,7 +32,6 @@ def health(xtrain, xtest, ytrain, ytest, folder_name, category):
     svm_pred = classifier.predict(xtest)
     # evaluate performance
     print(f1_score(ytest, svm_pred, average="micro"))
-        
 
 
 def modelHealth():
@@ -42,4 +42,31 @@ def modelHealth():
     health(xtrain, xtest, ytrain, ytest, category, category)
 
 
-modelHealth()
+def computer(xtrain, xtest, ytrain, ytest, folder_name, category):
+    
+    print("################## Model building started #################\n")
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(eta0 = 100, loss = 'modified_huber', penalty = 'l1'))
+    classifier.fit(xtrain, ytrain)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
+    loaded_model = pickle.load(open(filename, 'rb'))
+
+    print("################## Making prediction #################\n")
+    sgd_pred = classifier.predict(xtest)
+    # evaluate performance
+    print(f1_score(ytest, sgd_pred, average="micro"))
+
+
+def modelComputer():
+    # preprocess text 
+    xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("computer_and_it.csv", 
+                                                                        "computer_it")
+
+    computer(xtrain, xtest, ytrain, ytest, category, category)    
+
+
+modelComputer()
