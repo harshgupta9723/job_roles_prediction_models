@@ -64,7 +64,7 @@ def computer(xtrain, xtest, ytrain, ytest, folder_name, category):
 def modelComputer():
     # preprocess text 
     xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("computer_and_it.csv", 
-                                                                        "computer_it")
+                                                                        "computer_and_it")
 
     computer(xtrain, xtest, ytrain, ytest, category, category)    
 
