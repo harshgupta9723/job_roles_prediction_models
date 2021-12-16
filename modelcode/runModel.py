@@ -106,7 +106,7 @@ def sales(xtrain, xtest, ytrain, ytest, folder_name, category):
     # make folder if not exist
     
     filename = f'models/{folder_name}/{category}.sav'
-    pickle.dump(svm_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+    pickle.dump(xgb_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
     loaded_model = pickle.load(open(filename, 'rb'))
 
     print("################## Making prediction #################\n")
