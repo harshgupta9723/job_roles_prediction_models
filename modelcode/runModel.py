@@ -93,7 +93,33 @@ def modelEducation():
     xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("Education.csv", 
                                                                         "education")
 
-    computer(xtrain, xtest, ytrain, ytest, category, category)        
+    computer(xtrain, xtest, ytrain, ytest, category, category)  
+    
+    
+def sales(xtrain, xtest, ytrain, ytest, folder_name, category):
+    print("################## Model building started #################\n")
+    xgb = xgb.XGBClassifier()
+    xgb_clf = OneVsRestClassifier(xgb)
+    xgb_clf.fit(xtrain, ytrain)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(svm_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+    loaded_model = pickle.load(open(filename, 'rb'))
+
+    print("################## Making prediction #################\n")
+    svm_pred = xgb_clf.predict(xtest)
+    # evaluate performance
+    print(f1_score(ytest, svm_pred, average="micro"))
+    
+def sales_and_retail():
+    # preprocess text 
+    xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("sales_and_retail.csv", 
+                                                                        "sales_and_retail")
+
+    sales(xtrain, xtest, ytrain, ytest, category, category)
 
 def cleaning_facility(xtrain, xtest, ytrain, ytest, folder_name, category):
     print("################## Model building started #################\n")
