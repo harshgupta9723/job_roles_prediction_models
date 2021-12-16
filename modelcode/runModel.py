@@ -98,8 +98,8 @@ def modelEducation():
     
 def sales(xtrain, xtest, ytrain, ytest, folder_name, category):
     print("################## Model building started #################\n")
-    xgb = xgb.XGBClassifier()
-    xgb_clf = OneVsRestClassifier(xgb)
+    xgb1 = xgb.XGBClassifier()
+    xgb_clf = OneVsRestClassifier(xgb1)
     xgb_clf.fit(xtrain, ytrain)
     print("################## Model building end #################\n")
     # saving the model 
