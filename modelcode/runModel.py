@@ -93,7 +93,7 @@ def modelEducation():
     xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("Education.csv", 
                                                                         "education")
 
-    computer(xtrain, xtest, ytrain, ytest, category, category) 
+    education(xtrain, xtest, ytrain, ytest, category, category) 
 
 
 def customer_service(xtrain, xtest, ytrain, ytest, folder_name, category):
@@ -120,7 +120,7 @@ def modelCustomer():
     xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("customer_service.csv", 
                                                                         "customer_service")
 
-    computer(xtrain, xtest, ytrain, ytest, category, category)  
+    customer_service(xtrain, xtest, ytrain, ytest, category, category)  
     
     
 def sales(xtrain, xtest, ytrain, ytest, folder_name, category):
@@ -141,7 +141,7 @@ def sales(xtrain, xtest, ytrain, ytest, folder_name, category):
     # evaluate performance
     print(f1_score(ytest, svm_pred, average="micro"))
     
-    
+
 def sales_and_retail():
     # preprocess text 
     xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("sales_and_retail.csv", 
