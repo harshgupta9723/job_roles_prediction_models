@@ -102,7 +102,7 @@ def modelComputer():
 def education(xtrain, xtest, ytrain, ytest, folder_name, category):
     
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(eta0 = 1, loss = 'hinge', penalty = 'l1'))
+    classifier = OneVsRestClassifier(SGDClassifier(alpha = 0.0001, eta0= 10, learning_rate = 'adaptive', loss = 'modified_huber', penalty = 'l1'))
     classifier.fit(xtrain, ytrain)
     print("################## Model building end #################\n")
     # saving the model 
@@ -123,7 +123,34 @@ def modelEducation():
     xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("Education.csv", 
                                                                         "education")
 
-    computer(xtrain, xtest, ytrain, ytest, category, category)  
+    education(xtrain, xtest, ytrain, ytest, category, category) 
+
+
+def customer_service(xtrain, xtest, ytrain, ytest, folder_name, category):
+    
+    print("################## Model building started #################\n")
+    classifier = OneVsRestClassifier(SGDClassifier(alpha = 0.0001, eta0= 10, learning_rate = 'constant', loss = 'modified_huber', penalty = 'l1'))
+    classifier.fit(xtrain, ytrain)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
+    loaded_model = pickle.load(open(filename, 'rb'))
+
+    print("################## Making prediction #################\n")
+    sgd_pred = classifier.predict(xtest)
+    # evaluate performance
+    print(f1_score(ytest, sgd_pred, average="micro"))
+
+
+def modelCustomer():
+    # preprocess text 
+    xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("customer_service.csv", 
+                                                                        "customer_service")
+
+    customer_service(xtrain, xtest, ytrain, ytest, category, category)  
     
     
 def sales(xtrain, xtest, ytrain, ytest, folder_name, category):
@@ -144,12 +171,14 @@ def sales(xtrain, xtest, ytrain, ytest, folder_name, category):
     # evaluate performance
     print(f1_score(ytest, svm_pred, average="micro"))
     
+
 def sales_and_retail():
     # preprocess text 
     xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("sales_and_retail.csv", 
                                                                         "sales_and_retail")
 
     sales(xtrain, xtest, ytrain, ytest, category, category)
+
 
 def cleaning_facility(xtrain, xtest, ytrain, ytest, folder_name, category):
     print("################## Model building started #################\n")
@@ -168,7 +197,6 @@ def cleaning_facility(xtrain, xtest, ytrain, ytest, folder_name, category):
     svm_pred = classifier.predict(xtest)
     # evaluate performance
     print(f1_score(ytest, svm_pred, average="micro"))
-        
 
 
 def modelcleaning_facility():
@@ -177,6 +205,6 @@ def modelcleaning_facility():
                                                                         "cleaning_and_facilities")
 
     cleaning_facility(xtrain, xtest, ytrain, ytest, category, category)
-modelEducation()
+    
 
-modelcleaning_facility()
+modelCustomer()
