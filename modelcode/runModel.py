@@ -45,7 +45,7 @@ def modelHealth():
 def restaurant_and_hospitality(xtrain, xtest, ytrain, ytest, folder_name, category):
     print("################## Model building started #################\n")
     classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.0,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))
-#                 classifier.fit(xtrain_tfidf, ytrain)
+    #classifier.fit(xtrain_tfidf, ytrain)
     # svc = SVC( kernel='rbf', C=1e9, gamma=1e-07)
     # svc = KNeighborsClassifier(n_neighbors = 5, weights = 'distance',algorithm = 'brute',metric = 'minkowski')
     # svm_clf = OneVsRestClassifier(svc)
@@ -72,10 +72,11 @@ def modelrestaurant_and_hospitality():
 
     restaurant_and_hospitality(xtrain, xtest, ytrain, ytest, category, category)
 
+
 def computer(xtrain, xtest, ytrain, ytest, folder_name, category):
     
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(eta0 = 100, loss = 'modified_huber', penalty = 'l1'))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 0.5, learning_rate = 'optimal', loss = 'hinge', penalty = 'l1'))
     classifier.fit(xtrain, ytrain)
     print("################## Model building end #################\n")
     # saving the model 
@@ -207,4 +208,4 @@ def modelcleaning_facility():
     cleaning_facility(xtrain, xtest, ytrain, ytest, category, category)
     
 
-modelCustomer()
+modelComputer()
