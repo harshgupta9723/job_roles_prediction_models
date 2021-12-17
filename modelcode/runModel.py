@@ -13,6 +13,28 @@ from trainModel import Model
 
 model = Model()
 
+"""
+Please change you function according to this
+
+def cateogoryName(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.2,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))
+    classifier.fit(x, y)
+    print("################## Model building end #################\n")
+
+    # saving the model 
+    # make folder if not exist    
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
+
+def modelCategory():
+    # preprocess text 
+    x,y,category = model.readAndProcessData("Healthcare.csv","healthcare")
+
+    health(x,y, category, category)
+    
+"""
+
 def health(xtrain, xtest, ytrain, ytest, folder_name, category):
     print("################## Model building started #################\n")
     classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.2,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))

@@ -119,18 +119,18 @@ class Model:
         tfidf_vectorizer = TfidfVectorizer(max_features=5000)
         print(len(x), len(y_mul))
         # split the dataset into training and valid test 
-        xtrain, xval, ytrain, yval = train_test_split(x, y_mul, test_size=0.2, random_state=9)
+        # xtrain, xval, ytrain, yval = train_test_split(x, y_mul, test_size=0.2, random_state=9)
         # create Tf-IDF features
-        xtrain_tfidf = tfidf_vectorizer.fit(xtrain)
+        xtrain_tfidf = tfidf_vectorizer.fit(x)
         # saving tfidf
         pickle.dump(xtrain_tfidf, open(f"models/{folder_name}/{categroy}_vectorizer.pickle", "wb"))
 
-        xtrain_tfidf = tfidf_vectorizer.transform(xtrain)
-        xval_tfidf = tfidf_vectorizer.transform(xval) 
+        xtrain_tfidf = tfidf_vectorizer.transform(x)
+        # xval_tfidf = tfidf_vectorizer.transform(xval) 
         print("################## Encoding encoded #################\n")
         # 
 
-        return xtrain_tfidf, xval_tfidf, ytrain, yval, categroy
+        return xtrain_tfidf,y_mul, categroy
 
 
         # print("################## Model building started #################\n")
