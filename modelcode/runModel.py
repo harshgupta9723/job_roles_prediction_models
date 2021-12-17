@@ -149,31 +149,24 @@ def modelEducation():
     education(xtrain, xtest, ytrain, ytest, category, category) 
 
 
-def customer_service(xtrain, xtest, ytrain, ytest, folder_name, category):
+def customer_service(x, y, folder_name, category):
     
     print("################## Model building started #################\n")
     classifier = OneVsRestClassifier(SGDClassifier(alpha = 0.0001, eta0= 10, learning_rate = 'constant', loss = 'modified_huber', penalty = 'l1'))
-    classifier.fit(xtrain, ytrain)
+    classifier.fit(x, y)
     print("################## Model building end #################\n")
     # saving the model 
     # make folder if not exist
     
     filename = f'models/{folder_name}/{category}.sav'
     pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
-    loaded_model = pickle.load(open(filename, 'rb'))
-
-    print("################## Making prediction #################\n")
-    sgd_pred = classifier.predict(xtest)
-    # evaluate performance
-    print(f1_score(ytest, sgd_pred, average="micro"))
 
 
 def modelCustomer():
     # preprocess text 
-    xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("customer_service.csv", 
-                                                                        "customer_service")
+    x,y,category = model.readAndProcessData("customer_service.csv", "customer_service")
 
-    customer_service(xtrain, xtest, ytrain, ytest, category, category)  
+    customer_service(x, y, category, category)  
     
     
 def sales(xtrain, xtest, ytrain, ytest, folder_name, category):
@@ -230,4 +223,4 @@ def modelcleaning_facility():
     cleaning_facility(xtrain, xtest, ytrain, ytest, category, category)
     
 
-modelComputer()
+modelCustomer()
