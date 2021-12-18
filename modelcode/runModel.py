@@ -67,58 +67,44 @@ def model_restaurant_hospitality():
     restaurant_hospitality(x,y, category, category)
 
 
-def computer(xtrain, xtest, ytrain, ytest, folder_name, category):
+def computer(x, y, folder_name, category):
     
     print("################## Model building started #################\n")
     classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 0.5, learning_rate = 'optimal', loss = 'hinge', penalty = 'l1'))
-    classifier.fit(xtrain, ytrain)
+    classifier.fit(x, y)
     print("################## Model building end #################\n")
     # saving the model 
     # make folder if not exist
     
     filename = f'models/{folder_name}/{category}.sav'
     pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
-    loaded_model = pickle.load(open(filename, 'rb'))
-
-    print("################## Making prediction #################\n")
-    sgd_pred = classifier.predict(xtest)
-    # evaluate performance
-    print(f1_score(ytest, sgd_pred, average="micro"))
 
 
 def modelComputer():
     # preprocess text 
-    xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("computer_and_it.csv", 
-                                                                        "computer_and_it")
+    x, y, category = model.readAndProcessData("computer_and_it.csv",  "computer_and_it")
 
-    computer(xtrain, xtest, ytrain, ytest, category, category)
+    computer(x, y, category, category)
 
 
-def education(xtrain, xtest, ytrain, ytest, folder_name, category):
+def education(x, y, folder_name, category):
     
     print("################## Model building started #################\n")
     classifier = OneVsRestClassifier(SGDClassifier(alpha = 0.0001, eta0= 10, learning_rate = 'adaptive', loss = 'modified_huber', penalty = 'l1'))
-    classifier.fit(xtrain, ytrain)
+    classifier.fit(x, y)
     print("################## Model building end #################\n")
     # saving the model 
     # make folder if not exist
     
     filename = f'models/{folder_name}/{category}.sav'
     pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
-    loaded_model = pickle.load(open(filename, 'rb'))
-
-    print("################## Making prediction #################\n")
-    sgd_pred = classifier.predict(xtest)
-    # evaluate performance
-    print(f1_score(ytest, sgd_pred, average="micro"))
 
 
 def modelEducation():
     # preprocess text 
-    xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("Education.csv", 
-                                                                        "education")
+    x, y, category = model.readAndProcessData("Education.csv", "education")
 
-    education(xtrain, xtest, ytrain, ytest, category, category) 
+    education(x, y, category, category) 
 
 
 def customer_service(x, y, folder_name, category):
@@ -194,7 +180,7 @@ def model_account_and_financial():
 
     account_and_finance(x,y, category, category)
 
-model_account_and_financial()
+modelEducation()
 
     
 
