@@ -6,7 +6,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import f1_score
 import pickle
 from xgboost import XGBClassifier
-from xgboost import XGBClassifier as xgb
 from sklearn.linear_model import SGDClassifier
 
 from trainModel import Model
@@ -169,11 +168,10 @@ def modelCustomer():
     customer_service(x, y, category, category)  
     
     
-def sales(xtrain, xtest, ytrain, ytest, folder_name, category):
+def sales(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    xgb1 = xgb.XGBClassifier()
-    xgb_clf = OneVsRestClassifier(xgb1)
-    xgb_clf.fit(xtrain, ytrain)
+    xgb_clf = OneVsRestClassifier(XGBClassifier())
+    xgb_clf.fit(x, y)
     print("################## Model building end #################\n")
     # saving the model 
     # make folder if not exist
@@ -181,19 +179,13 @@ def sales(xtrain, xtest, ytrain, ytest, folder_name, category):
     filename = f'models/{folder_name}/{category}.sav'
     pickle.dump(xgb_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
     loaded_model = pickle.load(open(filename, 'rb'))
-
-    print("################## Making prediction #################\n")
-    svm_pred = xgb_clf.predict(xtest)
-    # evaluate performance
-    print(f1_score(ytest, svm_pred, average="micro"))
     
 
-def sales_and_retail():
+def modelSales():
     # preprocess text 
-    xtrain, xtest, ytrain, ytest , category = model.readAndProcessData("sales_and_retail.csv", 
-                                                                        "sales_and_retail")
+    x, y, category = model.readAndProcessData("sales_and_retail.csv", "sales_and_retail")
 
-    sales(xtrain, xtest, ytrain, ytest, category, category)
+    sales(x, y, category, category)
 
 
 def cleaning_facility(xtrain, xtest, ytrain, ytest, folder_name, category):
@@ -223,4 +215,4 @@ def modelcleaning_facility():
     cleaning_facility(xtrain, xtest, ytrain, ytest, category, category)
     
 
-modelCustomer()
+modelSales()
