@@ -170,15 +170,14 @@ def modelCustomer():
     
 def sales(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    xgb_clf = OneVsRestClassifier(XGBClassifier())
-    xgb_clf.fit(x, y)
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 1, learning_rate = 'constant', loss = 'perceptron', penalty = 'l2'))
+    classifier.fit(x, y)
     print("################## Model building end #################\n")
     # saving the model 
     # make folder if not exist
     
     filename = f'models/{folder_name}/{category}.sav'
-    pickle.dump(xgb_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
-    loaded_model = pickle.load(open(filename, 'rb'))
+    pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
     
 
 def modelSales():
