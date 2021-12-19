@@ -180,7 +180,8 @@ def model_cleaning_and_facilities():
     x,y,category = model.readAndProcessData("cleaning_and_facilities.csv","cleaning_and_facilities")
 
     cleaning_and_facilities(x,y, category, category)
-
+    
+modelEducation()
     
 def account_and_finance(x,y, folder_name, category):
     print("################## Model building started #################\n")
