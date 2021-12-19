@@ -51,7 +51,8 @@ def modelhealth():
     
 def restaurant_hospitality(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.0,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.0001,penalty = 'l1' ))
+
     classifier.fit(x, y)
     print("################## Model building end #################\n")
 
@@ -162,7 +163,7 @@ def modelSales():
 
 def cleaning_and_facilities(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.0,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'hinge' ,alpha = 0.0001,penalty = 'none' ))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
 
@@ -176,6 +177,8 @@ def model_cleaning_and_facilities():
     x,y,category = model.readAndProcessData("cleaning_and_facilities.csv","cleaning_and_facilities")
 
     cleaning_and_facilities(x,y, category, category)
+
+model_cleaning_and_facilities()
 
     
 def account_and_finance(x,y, folder_name, category):
@@ -195,7 +198,7 @@ def model_account_and_financial():
 
     account_and_finance(x,y, category, category)
 
-model_account_and_financial()
+
 
     
 
