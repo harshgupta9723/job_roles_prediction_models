@@ -145,6 +145,26 @@ def modelSales():
 
     sales(x, y, category, category)
 
+
+def manufacturing_and_warehouse(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 10, learning_rate = 'adaptive', loss = 'modified_huber', penalty = 'l1'))
+    classifier.fit(x, y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
+    
+
+def modelManufacturing():
+    # preprocess text 
+    x, y, category = model.readAndProcessData("manufacturing_and_warehouse.csv", "manufacturing_and_warehouse")
+
+    manufacturing_and_warehouse(x, y, category, category)
+
+
 def cleaning_and_facilities(x,y, folder_name, category):
     print("################## Model building started #################\n")
     classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.0,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))
@@ -180,7 +200,7 @@ def model_account_and_financial():
 
     account_and_finance(x,y, category, category)
 
-modelEducation()
+modelManufacturing()
 
     
 
