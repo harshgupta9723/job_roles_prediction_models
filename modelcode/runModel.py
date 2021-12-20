@@ -34,7 +34,8 @@ def modelCategory():
     """
 def healthcare(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.2,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'hinge' ,alpha = 0.0001,penalty = 'l1' ))
+    # classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.2,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
 
@@ -48,10 +49,13 @@ def modelhealth():
     x,y,category = model.readAndProcessData("Healthcare.csv","healthcare")
 
     healthcare(x,y, category, category)
+
+# modelhealth()
     
 def restaurant_hospitality(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.0,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.0001,penalty = 'l1' ))
+
     classifier.fit(x, y)
     print("################## Model building end #################\n")
 
@@ -147,7 +151,7 @@ def modelSales():
 
 def cleaning_and_facilities(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.0,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'hinge' ,alpha = 0.0001,penalty = 'none' ))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
 
@@ -180,7 +184,27 @@ def model_account_and_financial():
 
     account_and_finance(x,y, category, category)
 
-modelEducation()
+
+def media_communication(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.01,penalty = 'none' ))
+    classifier.fit(x, y)
+    print("################## Model building end #################\n")
+
+    # saving the model 
+    # make folder if not exist    
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
+
+def model_media_communication():
+    # preprocess text 
+    x,y,category = model.readAndProcessData("media_communications.csv","media_communications")
+
+    media_communication(x,y, category, category)
+
+
+# modelEducation()
+model_media_communication()
 
     
 
