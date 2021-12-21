@@ -50,7 +50,7 @@ def modelhealth():
 
     healthcare(x,y, category, category)
 
-modelhealth()
+# modelhealth()
     
 def restaurant_hospitality(x,y, folder_name, category):
     print("################## Model building started #################\n")
@@ -184,8 +184,27 @@ def model_account_and_financial():
 
     account_and_finance(x,y, category, category)
 
-    
-modelEducation()
+
+def media_communication(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.01,penalty = 'none' ))
+    classifier.fit(x, y)
+    print("################## Model building end #################\n")
+
+    # saving the model 
+    # make folder if not exist    
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
+
+def model_media_communication():
+    # preprocess text 
+    x,y,category = model.readAndProcessData("media_communications.csv","media_communications")
+
+    media_communication(x,y, category, category)
+
+
+# modelEducation()
+model_media_communication()
 
     
 
