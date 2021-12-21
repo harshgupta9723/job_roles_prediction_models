@@ -133,7 +133,7 @@ def modelCustomer():
     
 def sales(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 1, learning_rate = 'constant', loss = 'perceptron', penalty = 'l2'))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.01,penalty = 'none' ))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
     # saving the model 
@@ -146,8 +146,9 @@ def sales(x,y, folder_name, category):
 def modelSales():
     # preprocess text 
     x, y, category = model.readAndProcessData("sales_and_retail.csv", "sales_and_retail")
-
     sales(x, y, category, category)
+
+modelSales()
 
 def cleaning_and_facilities(x,y, folder_name, category):
     print("################## Model building started #################\n")
@@ -204,7 +205,7 @@ def model_media_communication():
 
 
 # modelEducation()
-model_media_communication()
+# model_media_communication()
 
     
 
