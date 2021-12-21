@@ -5,7 +5,6 @@ from sklearn.neighbors import KNeighborsClassifier
 # Performance metric
 from sklearn.metrics import f1_score
 import pickle
-from xgboost import XGBClassifier
 from sklearn.linear_model import SGDClassifier
 
 from trainModel import Model
@@ -50,7 +49,7 @@ def modelhealth():
 
     healthcare(x,y, category, category)
 
-# modelhealth()
+
     
 def restaurant_hospitality(x,y, folder_name, category):
     print("################## Model building started #################\n")
@@ -148,7 +147,6 @@ def modelSales():
     x, y, category = model.readAndProcessData("sales_and_retail.csv", "sales_and_retail")
     sales(x, y, category, category)
 
-# modelSales()
 
 
 def manufacturing_and_warehouse(x,y, folder_name, category):
@@ -223,8 +221,27 @@ def model_media_communication():
 
     media_communication(x,y, category, category)
 
+def advertising(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(eta0 = 1, loss = 'hinge', penalty = 'l1'))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def model_advertising_and_marketing():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("advertising_and_marketing.csv", 
+                                                                        "advertising_and_marketing")
 
-# modelEducation()
+    advertising(x,y, category, category)
+
+
+
+
 model_media_communication()
 
     
