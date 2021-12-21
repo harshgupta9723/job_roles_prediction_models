@@ -34,7 +34,7 @@ def modelCategory():
     """
 def healthcare(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'hinge' ,alpha = 0.0001,penalty = 'l1' ))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'hinge' ,alpha = 0.001,penalty = 'none' ))
     # classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.2,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
@@ -50,7 +50,7 @@ def modelhealth():
 
     healthcare(x,y, category, category)
 
-# modelhealth()
+modelhealth()
     
 def restaurant_hospitality(x,y, folder_name, category):
     print("################## Model building started #################\n")
@@ -148,7 +148,7 @@ def modelSales():
     x, y, category = model.readAndProcessData("sales_and_retail.csv", "sales_and_retail")
     sales(x, y, category, category)
 
-modelSales()
+# modelSales()
 
 def cleaning_and_facilities(x,y, folder_name, category):
     print("################## Model building started #################\n")
