@@ -49,6 +49,7 @@ def modelhealth():
 
     healthcare(x,y, category, category)
 
+
     
 def restaurant_hospitality(x,y, folder_name, category):
     print("################## Model building started #################\n")
@@ -205,7 +206,7 @@ def model_account_and_financial():
 
 def media_communication(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.01,penalty = 'none' ))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss ='hinge',alpha  = 0.001,penalty = 'none' ))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
 
@@ -239,8 +240,9 @@ def model_advertising_and_marketing():
     advertising(x,y, category, category)
 
 
-# modelEducation()
-# model_media_communication()
-model_advertising_and_marketing()
+
+
+model_media_communication()
+
     
 
