@@ -260,8 +260,26 @@ def modelScienceAndEngineering():
     advertising(x,y, category, category)
 
 
+def admin_office(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss ='squared_hinge',alpha  = 0.01,penalty = 'none' ))
+    classifier.fit(x, y)
+    print("################## Model building end #################\n")
 
-modelScienceAndEngineering()
+    # saving the model 
+    # make folder if not exist    
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
+
+def model_admin_office():
+    # preprocess text 
+    x,y,category = model.readAndProcessData("Admin and Office.csv","admin_and_office")
+
+    admin_office(x,y, category, category)
+
+model_admin_office()
+
+# modelScienceAndEngineering()
 
     
 
