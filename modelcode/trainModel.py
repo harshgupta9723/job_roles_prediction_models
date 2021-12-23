@@ -7,7 +7,7 @@ import pickle
 import nltk
 from nltk.corpus import stopwords
 stop_word = stopwords.words('english')
-from cleantext import clean
+# from cleantext import clean
 import re
 from bs4 import BeautifulSoup
 # mulitlable encoder
