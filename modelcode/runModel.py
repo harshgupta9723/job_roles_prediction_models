@@ -254,7 +254,7 @@ def scienceAndEngineering(x,y, folder_name, category):
         
 def modelScienceAndEngineering():
     # preprocess text 
-    x,y, category = model.readAndProcessData("/home/himanshu/Downloads/Science and Engineering.csv", 
+    x,y, category = model.readAndProcessData("Science and Engineering.csv", 
                                                                         "science_and_engineering")
 
     advertising(x,y, category, category)
@@ -277,9 +277,9 @@ def model_admin_office():
 
     admin_office(x,y, category, category)
 
-model_admin_office()
+# model_admin_office()
 
-# modelScienceAndEngineering()
+modelScienceAndEngineering()
 
     
 
