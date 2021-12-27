@@ -318,12 +318,27 @@ def modelEneryAndMining():
     energyAndMining(x,y, category, category)
 
 
+def business_operation(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss ='squared_hinge',alpha  = 0.001,penalty = 'none' ))
+    classifier.fit(x, y)
+    print("################## Model building end #################\n")
+
+    # saving the model
+    # make folder if not exist
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
 # model_admin_office()
 # modelsportAndFitness()
 
-modelEneryAndMining()
+# modelEneryAndMining()
 
-# modelScienceAndEngineering()
+def model_business_operation():
+    # preprocess text
+    x,y,category = model.readAndProcessData("Business Operations.csv","Business Operations")
 
-    
+    business_operation(x,y, category, category)
+
+model_business_operation()
+
 
