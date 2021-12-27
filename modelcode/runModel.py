@@ -295,10 +295,33 @@ def modelsportAndFitness():
     x,y, category = model.readAndProcessData("/home/himanshu/Downloads/Sports Fitness and Recreation.csv", 
                                                                         "sports_fitness_and_recreation")
 
-    advertising(x,y, category, category)
+    sportAndFitness(x,y, category, category)
+
+
+# Energy and Mining
+def energyAndMining(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(loss = "hinge",alpha  = 0.0001,penalty = "l2"))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def modelEneryAndMining():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("/home/himanshu/Downloads/Energy and Mining.csv", 
+                                                                        "energy_and_mining")
+
+    energyAndMining(x,y, category, category)
+
 
 # model_admin_office()
-modelsportAndFitness()
+# modelsportAndFitness()
+
+modelEneryAndMining()
 
 # modelScienceAndEngineering()
 
