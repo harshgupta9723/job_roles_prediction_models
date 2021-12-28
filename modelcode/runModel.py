@@ -277,7 +277,28 @@ def model_admin_office():
 
     admin_office(x,y, category, category)
 
-model_admin_office()
+
+# Science and Engineering
+def sportAndFitness(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(loss = 'hinge',alpha  = 0.0001,penalty = 'none'))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def modelsportAndFitness():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("/home/himanshu/Downloads/Sports Fitness and Recreation.csv", 
+                                                                        "sports_fitness_and_recreation")
+
+    advertising(x,y, category, category)
+
+# model_admin_office()
+modelsportAndFitness()
 
 # modelScienceAndEngineering()
 
