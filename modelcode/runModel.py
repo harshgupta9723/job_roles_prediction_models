@@ -357,5 +357,26 @@ def model_installation_maintenance():
 
     business_operation(x,y, category, category)
 
+# Human Resources
+def humanResources(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(loss = "hinge",alpha  = 0.0001,penalty = "l2"))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def modelHumanResources():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("/home/himanshu/Downloads/Human Resources.csv", 
+                                                                        "human_resources")
+
+    humanResources(x,y, category, category)
+
+modelHumanResources()
+
 model_installation_maintenance()
 
