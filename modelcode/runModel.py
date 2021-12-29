@@ -376,7 +376,81 @@ def modelHumanResources():
 
     humanResources(x,y, category, category)
 
-modelHumanResources()
 
+def management(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(eta0 = 3, loss = 'hinge', penalty = 'l1'))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def model_management():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("Management.csv", 
+                                                                        "management")
+
+    management(x,y, category, category)
+
+def entertainment_and_travel(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(eta0 = 2, loss = 'hinge', penalty = 'l1'))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def model_entertainment_and_travel():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("Entertainment and Travel.csv", 
+                                                                        "entertainment_and_travel")
+
+    entertainment_and_travel(x,y, category, category)
+
+def property(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(eta0 = 3, loss = 'hinge', penalty = 'l1'))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def model_property():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("Property.csv", 
+                                                                        "property")
+
+    property(x,y, category, category)
+
+def social_services_and_non_profit(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 10, penalty = 'l1'))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def model_social_services_and_non_profit():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("Social_Services_and_Non_Profit.csv", 
+                                                                        "social_services_and_non_profit")
+
+    social_services_and_non_profit(x,y, category, category)
+
+
+
+#modelHumanResources()
 model_installation_maintenance()
 
