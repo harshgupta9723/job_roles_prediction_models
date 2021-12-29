@@ -452,5 +452,23 @@ def model_social_services_and_non_profit():
 
 
 #modelHumanResources()
-model_installation_maintenance()
+# model_installation_maintenance()
 
+def animal_care(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(loss = "modified_huber",alpha  = 0.01,penalty = "none"))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def model_animal_care():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("Animal Care.csv","animal_care")
+
+    animal_care(x,y, category, category)
+
+model_animal_care()
