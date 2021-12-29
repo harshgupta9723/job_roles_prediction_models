@@ -328,10 +328,7 @@ def business_operation(x,y, folder_name, category):
     # make folder if not exist
     filename = f'models/{folder_name}/{category}.sav'
     pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
-# model_admin_office()
-# modelsportAndFitness()
 
-# modelEneryAndMining()
 
 def model_business_operation():
     # preprocess text
@@ -339,6 +336,26 @@ def model_business_operation():
 
     business_operation(x,y, category, category)
 
-model_business_operation()
+def installation_maintenance(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss ='modified_huber',alpha  = 0.001,penalty = 'none' ))
+    classifier.fit(x, y)
+    print("################## Model building end #################\n")
 
+    # saving the model
+    # make folder if not exist
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
+# model_admin_office()
+# modelsportAndFitness()
+
+# modelEneryAndMining()
+
+def model_installation_maintenance():
+    # preprocess text
+    x,y,category = model.readAndProcessData("Installation, Maintenance and Repair.csv","installation_maintenance_and_repair")
+
+    business_operation(x,y, category, category)
+
+model_installation_maintenance()
 
