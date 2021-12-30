@@ -469,6 +469,6 @@ def model_animal_care():
     # preprocess text 
     x,y, category = model.readAndProcessData("Animal Care.csv","animal_care")
 
-    energyAndMining(x,y, category, category)
+    animal_care(x,y, category, category)
 
 model_animal_care()
