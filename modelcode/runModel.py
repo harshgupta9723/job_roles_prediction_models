@@ -170,7 +170,7 @@ def modelManufacturing():
 
 def cleaning_and_facilities(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'hinge' ,alpha = 0.0001,penalty = 'none' ))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.001,penalty = 'none' ))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
 
@@ -181,11 +181,13 @@ def cleaning_and_facilities(x,y, folder_name, category):
 
 def model_cleaning_and_facilities():
     # preprocess text 
-    x,y,category = model.readAndProcessData("cleaning_and_facilities.csv","cleaning_and_facilities")
+    x,y,category = model.readAndProcessData("Cleaning and Facilities .csv","cleaning_and_facilities")
 
     cleaning_and_facilities(x,y, category, category)
 
-    
+model_cleaning_and_facilities()
+
+
 def account_and_finance(x,y, folder_name, category):
     print("################## Model building started #################\n")
     classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'hinge' ,alpha = 0.0001,penalty = 'l1' ))
@@ -489,4 +491,3 @@ def model_art_fashion():
 
     art_fashion(x,y, category, category)
 
-model_art_fashion()
