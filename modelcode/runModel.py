@@ -185,8 +185,6 @@ def model_cleaning_and_facilities():
 
     cleaning_and_facilities(x,y, category, category)
 
-model_cleaning_and_facilities()
-
 
 def account_and_finance(x,y, folder_name, category):
     print("################## Model building started #################\n")
@@ -208,7 +206,7 @@ def model_account_and_financial():
 
 def media_communication(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss ='hinge',alpha  = 0.001,penalty = 'none' ))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss ='modified_huber',alpha  = 0.001,penalty = 'none' ))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
 
@@ -219,9 +217,11 @@ def media_communication(x,y, folder_name, category):
 
 def model_media_communication():
     # preprocess text 
-    x,y,category = model.readAndProcessData("media_communications.csv","media_communications")
+    x,y,category = model.readAndProcessData("Media, Communications and Writing.csv","media_communications_and_writing")
 
     media_communication(x,y, category, category)
+
+model_media_communication()
 
 def advertising(x,y, folder_name, category):
     print("################## Model building started #################\n")
