@@ -221,7 +221,6 @@ def model_media_communication():
 
     media_communication(x,y, category, category)
 
-model_media_communication()
 
 def advertising(x,y, folder_name, category):
     print("################## Model building started #################\n")
@@ -242,7 +241,6 @@ def model_advertising_and_marketing():
     advertising(x,y, category, category)
 
 
-# Science and Engineering
 def scienceAndEngineering(x,y, folder_name, category):
     print("################## Model building started #################\n")
     sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(loss = 'hinge',alpha=0.0001, penalty = 'l1'))
@@ -348,10 +346,7 @@ def installation_maintenance(x,y, folder_name, category):
     # make folder if not exist
     filename = f'models/{folder_name}/{category}.sav'
     pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
-# model_admin_office()
-# modelsportAndFitness()
 
-# modelEneryAndMining()
 
 def model_installation_maintenance():
     # preprocess text
@@ -452,10 +447,6 @@ def model_social_services_and_non_profit():
     social_services_and_non_profit(x,y, category, category)
 
 
-
-#modelHumanResources()
-# model_installation_maintenance()
-
 def animal_care(x,y, folder_name, category):
     print("################## Model building started #################\n")
     sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(loss = "modified_huber",alpha  = 0.01,penalty = "none"))
@@ -491,3 +482,20 @@ def model_art_fashion():
 
     art_fashion(x,y, category, category)
 
+
+def protective_services(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0 = 10,learning_rate = 'optimal', loss = 'modified_huber', penalty = 'l1'))
+    classifier.fit(x, y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
+    
+
+def modelProtective():
+    # preprocess text 
+    x, y, category = model.readAndProcessData("Protective Services.csv", "protective_services")
+    protective_services(x, y, category, category)
+
+#modelProtective()    
