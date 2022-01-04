@@ -99,7 +99,6 @@ def education(x, y, folder_name, category):
     # saving the model 
     # make folder if not exist
     
-    filename = f'models/{folder_name}/{category}.sav'
     pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
 
 
@@ -498,4 +497,4 @@ def modelProtective():
     x, y, category = model.readAndProcessData("Protective Services.csv", "protective_services")
     protective_services(x, y, category, category)
 
-#modelProtective()    
+#modelEducation()
