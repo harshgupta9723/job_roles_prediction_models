@@ -497,4 +497,37 @@ def modelProtective():
     x, y, category = model.readAndProcessData("Protective Services.csv", "protective_services")
     protective_services(x, y, category, category)
 
+def farming_and_outdoor(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(eta0 = 4, loss = 'hinge', penalty = 'l1'))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def model_farming_and_outdoor():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("Farming and Outdoors.csv","farming_and_outdoor")
+
+    farming_and_outdoor(x,y, category, category)
+
+def construction(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 10, penalty = 'l1'))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def model_construction():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("Construction.csv","construction")
+
+    construction(x,y, category, category)
 #modelEducation()
