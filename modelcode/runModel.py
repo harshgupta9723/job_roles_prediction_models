@@ -131,21 +131,19 @@ def modelCustomer():
     
 def sales(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.01,penalty = 'none' ))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0 = 1,learning_rate = 'optimal', loss = 'modified_huber', penalty = 'l1'))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
     # saving the model 
     # make folder if not exist
-    
-    filename = f'models/{folder_name}/{category}.sav'
+
     pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
     
 
 def modelSales():
     # preprocess text 
-    x, y, category = model.readAndProcessData("sales_and_retail.csv", "sales_and_retail")
+    x, y, category = model.readAndProcessData("Sales and Retail.csv", "sales_and_retail")
     sales(x, y, category, category)
-
 
 
 def manufacturing_and_warehouse(x,y, folder_name, category):
@@ -530,4 +528,6 @@ def model_construction():
     x,y, category = model.readAndProcessData("Construction.csv","construction")
 
     construction(x,y, category, category)
-#modelEducation()
+
+
+#modelSales()
