@@ -45,6 +45,7 @@ def healthcare(x,y, folder_name, category):
 
 def modelhealth():
     # preprocess text 
+    # taking csv data as input
     x,y,category = model.readAndProcessData("Healthcare.csv","healthcare")
 
     healthcare(x,y, category, category)
