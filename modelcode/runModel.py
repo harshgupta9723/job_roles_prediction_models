@@ -50,12 +50,12 @@ def modelhealth():
 
     healthcare(x,y, category, category)
 
-modelhealth()
+# modelhealth()
 
     
 def restaurant_hospitality(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.0001,penalty = 'l1' ))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.01,penalty = 'none' ))
 
     classifier.fit(x, y)
     print("################## Model building end #################\n")
@@ -67,10 +67,12 @@ def restaurant_hospitality(x,y, folder_name, category):
 
 def model_restaurant_hospitality():
     # preprocess text 
-    x,y,category = model.readAndProcessData("restaurant_and_hospitality.csv","restaurant_and_hospitality")
+    # taking csv as input
+    x,y,category = model.readAndProcessData("Restaurant and Hospitality.csv","restaurant_and_hospitality")
 
     restaurant_hospitality(x,y, category, category)
 
+model_restaurant_hospitality()
 
 def computer(x, y, folder_name, category):
     
