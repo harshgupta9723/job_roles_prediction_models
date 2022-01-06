@@ -31,6 +31,7 @@ def modelCategory():
 
     health(x,y, category, category)
     """
+
 def healthcare(x,y, folder_name, category):
     print("################## Model building started #################\n")
     classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'squared_hinge' ,alpha = 0.001,penalty = 'none' ))
@@ -49,8 +50,6 @@ def modelhealth():
     x,y,category = model.readAndProcessData("Healthcare.csv","healthcare")
 
     healthcare(x,y, category, category)
-
-# modelhealth()
 
     
 def restaurant_hospitality(x,y, folder_name, category):
@@ -72,7 +71,6 @@ def model_restaurant_hospitality():
 
     restaurant_hospitality(x,y, category, category)
 
-model_restaurant_hospitality()
 
 def computer(x, y, folder_name, category):
     
@@ -152,19 +150,17 @@ def modelSales():
 
 def manufacturing_and_warehouse(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 10, learning_rate = 'adaptive', loss = 'modified_huber', penalty = 'l1'))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 1e-05, eta0 = 0.1, learning_rate = 'optimal', loss = 'modified_huber', penalty = 'l1'))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
     # saving the model 
     # make folder if not exist
-    
-    filename = f'models/{folder_name}/{category}.sav'
     pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
     
 
 def modelManufacturing():
     # preprocess text 
-    x, y, category = model.readAndProcessData("manufacturing_and_warehouse.csv", "manufacturing_and_warehouse")
+    x, y, category = model.readAndProcessData("Manufacturing and Warehouse.csv", "manufacturing_and_warehouse")
 
     manufacturing_and_warehouse(x, y, category, category)
 
@@ -532,6 +528,3 @@ def model_construction():
     x,y, category = model.readAndProcessData("Construction.csv","construction")
 
     construction(x,y, category, category)
-
-
-#modelSales()
