@@ -67,6 +67,7 @@ def restaurant_hospitality(x,y, folder_name, category):
 
 def model_restaurant_hospitality():
     # preprocess text 
+    # taking csv as input
     x,y,category = model.readAndProcessData("Restaurant and Hospitality.csv","restaurant_and_hospitality")
 
     restaurant_hospitality(x,y, category, category)
