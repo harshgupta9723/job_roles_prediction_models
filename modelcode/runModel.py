@@ -150,7 +150,7 @@ def modelSales():
 
 def manufacturing_and_warehouse(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 1e-05, eta0 = 0.1, learning_rate = 'optimal', loss = 'modified_huber', penalty = 'l1'))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'squared_hinge',alpha  = 0.001,penalty = 'none'))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
     # saving the model 
