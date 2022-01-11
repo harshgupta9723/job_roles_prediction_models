@@ -533,7 +533,7 @@ def model_construction():
 
 def transportation(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 10, penalty = 'l1'))
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 0.1,learning_rate = 'optimal',loss = 'modified_huber', penalty = 'l1'))
     sgd_clf.fit(x,y)
     print("################## Model building end #################\n")
     # saving the model 
