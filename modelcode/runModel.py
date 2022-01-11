@@ -31,9 +31,10 @@ def modelCategory():
 
     health(x,y, category, category)
     """
+
 def healthcare(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'hinge' ,alpha = 0.001,penalty = 'none' ))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'squared_hinge' ,alpha = 0.001,penalty = 'none' ))
     # classifier = OneVsRestClassifier(estimator=XGBClassifier(gamma =0.2,max_depth = 4,min_child_weight=1,learning_rate=0.05,eval_metric='mlogloss',use_label_encoder =False))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
@@ -45,15 +46,15 @@ def healthcare(x,y, folder_name, category):
 
 def modelhealth():
     # preprocess text 
+    # taking csv data as input
     x,y,category = model.readAndProcessData("Healthcare.csv","healthcare")
 
     healthcare(x,y, category, category)
 
-
     
 def restaurant_hospitality(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.0001,penalty = 'l1' ))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.01,penalty = 'none' ))
 
     classifier.fit(x, y)
     print("################## Model building end #################\n")
@@ -65,7 +66,8 @@ def restaurant_hospitality(x,y, folder_name, category):
 
 def model_restaurant_hospitality():
     # preprocess text 
-    x,y,category = model.readAndProcessData("restaurant_and_hospitality.csv","restaurant_and_hospitality")
+    # taking csv as input
+    x,y,category = model.readAndProcessData("Restaurant and Hospitality.csv","restaurant_and_hospitality")
 
     restaurant_hospitality(x,y, category, category)
 
@@ -131,38 +133,34 @@ def modelCustomer():
     
 def sales(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss = 'modified_huber' ,alpha = 0.01,penalty = 'none' ))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0 = 1,learning_rate = 'optimal', loss = 'modified_huber', penalty = 'l1'))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
     # saving the model 
     # make folder if not exist
-    
-    filename = f'models/{folder_name}/{category}.sav'
+
     pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
     
 
 def modelSales():
     # preprocess text 
-    x, y, category = model.readAndProcessData("sales_and_retail.csv", "sales_and_retail")
+    x, y, category = model.readAndProcessData("Sales and Retail.csv", "sales_and_retail")
     sales(x, y, category, category)
-
 
 
 def manufacturing_and_warehouse(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 10, learning_rate = 'adaptive', loss = 'modified_huber', penalty = 'l1'))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(alpha = 1e-05, eta0 = 0.1, learning_rate = 'optimal', loss = 'modified_huber', penalty = 'l1'))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
     # saving the model 
     # make folder if not exist
-    
-    filename = f'models/{folder_name}/{category}.sav'
     pickle.dump(classifier, open(f'models/{folder_name}/{category}.sav', 'wb'))
     
 
 def modelManufacturing():
     # preprocess text 
-    x, y, category = model.readAndProcessData("manufacturing_and_warehouse.csv", "manufacturing_and_warehouse")
+    x, y, category = model.readAndProcessData("Manufacturing and Warehouse.csv", "manufacturing_and_warehouse")
 
     manufacturing_and_warehouse(x, y, category, category)
 
@@ -261,7 +259,7 @@ def modelScienceAndEngineering():
 
 def admin_office(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss ='hinge',alpha  = 0.001,penalty = 'none' ))
+    classifier = OneVsRestClassifier(estimator=SGDClassifier(loss ='hinge',eta0=1,penalty = 'l2' ))
     classifier.fit(x, y)
     print("################## Model building end #################\n")
 
@@ -276,7 +274,7 @@ def model_admin_office():
 
     admin_office(x,y, category, category)
 
-
+#model_admin_office()
 # Science and Engineering
 def sportAndFitness(x,y, folder_name, category):
     print("################## Model building started #################\n")
@@ -466,7 +464,7 @@ def model_animal_care():
 
 def art_fashion(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(loss = "hinge",alpha  = 0.001,penalty = "none"))
+    sgd_clf = OneVsRestClassifier(estimator=SVC(C=5,gamma=1,kernel='sigmoid'))
     sgd_clf.fit(x,y)
     print("################## Model building end #################\n")
     # saving the model 
@@ -480,7 +478,8 @@ def model_art_fashion():
     x,y, category = model.readAndProcessData("Art, Fashion and Design.csv","art_fashion_and_design")
 
     art_fashion(x,y, category, category)
-
+    
+#model_art_fashion()
 
 def protective_services(x,y, folder_name, category):
     print("################## Model building started #################\n")
@@ -516,7 +515,7 @@ def model_farming_and_outdoor():
 
 def construction(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 10, penalty = 'l1'))
+    sgd_clf = OneVsRestClassifier(estimator=SVC(C=5,gamma=1,kernel='sigmoid'))
     sgd_clf.fit(x,y)
     print("################## Model building end #################\n")
     # saving the model 
@@ -530,4 +529,22 @@ def model_construction():
     x,y, category = model.readAndProcessData("Construction.csv","construction")
 
     construction(x,y, category, category)
-#modelEducation()
+#model_construction()
+def transport_and_logistics(x,y, folder_name, category):
+    print("################## Model building started #################\n")
+    sgd_clf = OneVsRestClassifier(estimator=SVC(C=5,gamma=1,kernel='sigmoid'))
+    sgd_clf.fit(x,y)
+    print("################## Model building end #################\n")
+    # saving the model 
+    # make folder if not exist
+    #   
+    filename = f'models/{folder_name}/{category}.sav'
+    pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
+        
+def model_transport_and_logistics():
+    # preprocess text 
+    x,y, category = model.readAndProcessData("Transportation and Logistics.csv","transport_and_logistics")
+
+    transport_and_logistics(x,y, category, category)
+
+#model_transport_and_logistics()
