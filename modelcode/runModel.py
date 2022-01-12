@@ -463,13 +463,12 @@ def model_animal_care():
 
 def art_fashion(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(loss = "hinge",alpha  = 0.001,penalty = "none"))
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(alpha  = 0.0001,penalty = "elasticnet", eta0 = 1))
     sgd_clf.fit(x,y)
     print("################## Model building end #################\n")
     # saving the model 
     # make folder if not exist
-    #   
-    filename = f'models/{folder_name}/{category}.sav'
+ 
     pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
         
 def model_art_fashion():
@@ -515,13 +514,12 @@ def model_farming_and_outdoor():
 
 def construction(x,y, folder_name, category):
     print("################## Model building started #################\n")
-    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 10, penalty = 'l1'))
+    sgd_clf = OneVsRestClassifier(estimator=SGDClassifier(alpha = 0.0001, eta0= 0.5, penalty = 'elasticnet'))
     sgd_clf.fit(x,y)
     print("################## Model building end #################\n")
     # saving the model 
     # make folder if not exist
-    #   
-    filename = f'models/{folder_name}/{category}.sav'
+
     pickle.dump(sgd_clf, open(f'models/{folder_name}/{category}.sav', 'wb'))
         
 def model_construction():
